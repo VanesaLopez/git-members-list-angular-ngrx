@@ -1,0 +1,53 @@
+<div class="sticky-top">
+    <nav class="navbar navbar-light bg-light">
+        <h2>{{organization | titlecase }} members</h2>
+        <app-member-form
+        (organizationChange)="loadMembers($event)"
+        >
+      </app-member-form>
+      </nav>
+</div>
+  <div class="container pb-5">
+<div class="row justify-content-center">
+  <div class="col-sm-10">
+      <div class="table-responsive-sm">
+    <table class="table">
+      <thead app-member-head></thead>
+      <tbody>
+        <tr *ngIf="isLoading" class="text-center">
+          <td colspan="3" class="p-5">
+            <div class="spinner-grow text-info" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+          </td>
+        </tr>
+        <tr *ngIf="!isLoading && !members?.length" class="text-center">
+            <td colspan="3">
+              <span>{{error | titlecase}}</span>
+            </td>
+          </tr>
+        <ng-container *ngIf="members?.length">
+        <tr  
+          app-member-row 
+          [member]="member" 
+          *ngFor="let member of returnedmembers">
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+</div>
+<div *ngIf="members?.length > itemsPerPage" class="fixed-bottom">
+    <footer class="navbar navbar-light bg-light">
+      <span></span>
+      <pagination
+        [itemsPerPage]="itemsPerPage"
+        [totalItems]="members.length" 
+        [rotate]="true"
+        [maxSize]="3"
+        (pageChanged)="pageChanged($event)">
+      </pagination>
+    </footer>
+</div>
