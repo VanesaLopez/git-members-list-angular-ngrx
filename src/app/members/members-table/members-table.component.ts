@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../reducers';
+import * as organization from '../actions/change-organization.action';
 
 import { MemberEntity } from '../models/member.model';
 import { MembersApiService } from '../members-api.service';
@@ -9,18 +12,24 @@ import { MembersApiService } from '../members-api.service';
   templateUrl: './members-table.component.html',
   styles: ['.spinner-grow {width: 4rem; height: 4rem;}']
 })
-export class MembersTableComponent implements OnInit {
+export class MembersTableComponent {
   members: MemberEntity[] = [];
   returnedmembers: MemberEntity[]; 
   itemsPerPage = 5;
   isLoading = false;
-  organization = 'lemoncode';
+  organization: string;
   error = 'Nothing to display!!';
 
-  constructor(private membersApi: MembersApiService) { }
-
-  ngOnInit(): void {
-    this.loadMembers(this.organization);
+  constructor(
+    private membersApi: MembersApiService,
+    private store: Store<fromRoot.State>
+  ) { 
+    this.store.dispatch(new organization.SetOrganization(''));
+    this.store.select('organization')
+     .subscribe((result) => {
+       this.organization = result;
+       this.loadMembers(this.organization);
+     });
   }
  
   pageChanged(event: PageChangedEvent): void {

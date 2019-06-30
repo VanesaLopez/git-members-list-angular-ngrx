@@ -3,6 +3,8 @@ import { HttpClientModule } from '@angular/common/http'
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './reducers';
 import {
   MemberRowComponent,
   MemberHeadComponent,
@@ -15,7 +17,8 @@ import { MemberFormComponent } from './member-form/member-form.component';
     PaginationModule.forRoot(),
     CommonModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forFeature('organization', reducers.organization)
   ],
   declarations: [
     MemberRowComponent,

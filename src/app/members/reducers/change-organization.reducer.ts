@@ -1,20 +1,11 @@
 import * as organization from '../actions/change-organization.action';
 
-export interface State {
-  organization: string;
-}
+const ORGANIZATION = 'lemoncode';
 
-const initialState = {
-  organization: 'lemoncode'
-};
-
-export function reducer(state = initialState, action: organization.Actions): State {
+export function reducer(state: string = '', action: organization.Actions): string {
   switch (action.type) {
     case organization.SET_ORGANIZATION:
-      return {
-        ...state,
-        organization: state.organization,
-      };
+      return action.payload ? action.payload : ORGANIZATION;
     default:
       return state;
   }

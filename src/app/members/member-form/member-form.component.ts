@@ -1,4 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../reducers';
+import * as organization from '../actions/change-organization.action';
 
 @Component({
   selector: 'app-member-form',
@@ -6,12 +9,14 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styles: []
 })
 export class MemberFormComponent {
-
-  @Output() organizationChange: EventEmitter<string> = new EventEmitter();
   organization: string;
 
+  constructor(
+    private store: Store<fromRoot.State>
+  ) { }
+
   changeOrganization() {
-    this.organizationChange.emit(this.organization);
+    this.store.dispatch(new organization.SetOrganization(this.organization));
   }
 
 }
